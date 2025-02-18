@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ubuntu Terminal</title>
+
+</head>
+<body>
+  <div class="terminal">
+    <div class="terminal-header">user"&#64;"ubuntu:~$</div>
+    <div class="terminal-content">
+        <p>{{ terminal_content}}</p>
+    </div>
+    <div class="terminal-prompt">
+      <span>user"&#64;"ubuntu:~$</span>
+      <input type="text" [(ngModel)]="terminal_command" (keyup.enter)="onEnter()" autofocus />
+    </div>
+  </div>
+</body>
+</html>

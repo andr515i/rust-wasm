@@ -1,0 +1,57 @@
+body {
+ margin-top: -8px;
+  padding: 0;
+  background-color: #1e1e2e;
+  font-family: monospace;
+  color: #cdd6f4;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+html {
+/* for some reason, i need to do this little shenanigan to actually make the body take up the whole screen. this is also the reason
+ * for the weird margin-top in the body*/
+  margin-left: -16px;
+  margin-bottom: -16px;
+  padding: 0;
+}
+.terminal {
+  background-color: #1e1e2e;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 10px #000;
+  display: flex;
+  flex-direction: column;
+}
+.terminal-header {
+  background-color: #313244;
+  padding: 10px;
+  border-radius: 5px 5px 0 0;
+}
+.terminal-content {
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+.terminal-prompt {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-top: 1px solid #313244;
+}
+.terminal-prompt span {
+  margin-right: 5px;
+}
+.terminal-prompt input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #cdd6f4;
+  font-family: monospace;
+  width: 100%;
+}
