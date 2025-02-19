@@ -36,9 +36,7 @@ impl Terminal {
                 "help: display this help message\n
                     about: prints information about the author of this website.\n
                     projects: prints information about my most recent projects.\n
-                    contact: prints all the current ways you can contact me.\n
-                    cd: change directory\n
-                    "
+                    contact: prints all the current ways you can contact me.\n"
                     .to_string(),
                 )
             },
@@ -73,7 +71,7 @@ impl Terminal {
                     else if 
                         command == "cd .." {
                         self.cwd = go_back_one_dir(&self.cwd);    
-                        if self.cwd.is_empty() {
+                        if self.cwd == "" {
                             self.cwd = "/".to_string();
                         }
                         Ok(format!("changed directory to {}", self.cwd))
@@ -86,7 +84,7 @@ impl Terminal {
                 Ok("test\n".to_string())
             }
             _ => {
-                Ok("unknown command\n".to_string())
+                Ok("unknown command,\n".to_string())
             }
         }
     }
