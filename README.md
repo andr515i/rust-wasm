@@ -77,33 +77,21 @@ Once the application is running:
 - Use the up and down arrow keys to navigate through your command history.
 
 ## Project Structure
-
+```bash
 rust-wasm/
-
 ├── angular.json                # Angular CLI configuration, includes assets configuration
-
 ├── package.json                # Node dependencies and scripts
-
 ├── src/
-
 │   ├── app/
-
 │   │   ├── app.component.html  # Terminal UI
-
 │   │   ├── app.component.ts    # Angular component logic
-
 │   │   └── app.component.css   # Terminal styles
-
 │   └── assets/
-
 │       └── pkg/                # Generated WebAssembly files (from Rust)
-
 ├── Cargo.toml                  # Rust project configuration
-
-└── src/
-
-    └── lib.rs                  # Rust source code for terminal logic
-    
+└── src
+    └─ lib.rs                  # Rust source code for terminal logic
+```
 
 ## Development
 
