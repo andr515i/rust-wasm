@@ -13,7 +13,7 @@
     </div>
     <div class="terminal-prompt">
       <span>user"&#64;"ubuntu:~$</span>
-      <input type="text" [(ngModel)]="terminal_command" (keyup.arrowdown)="onDown()" (keyup.arrowup)="onUp()" (keyup.enter)="onEnter()" autofocus />
+      <input type="text" [(ngModel)]="terminal_command" (keydown.Tab)="onTab();false" (keyup.arrowdown)="onDown()" (keyup.arrowup)="onUp()" (keyup.enter)="onEnter()" autofocus />
     </div>
   </div>
 </body>

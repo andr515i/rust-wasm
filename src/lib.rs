@@ -28,8 +28,35 @@ impl Terminal {
             directories,
         }
     }
+
+    /// returns all available commands, in a list
+    pub fn get_commands(&self) -> Vec<String> {
+        vec![
+            "help".to_string(),
+            "about".to_string(),
+            "projects".to_string(),
+            "contact".to_string(),
+            "cd".to_string(),
+            "test".to_string(),
+        ]
+    }
+
+    /// takes in the currently typed command and returns the most likely command via a kind of
+    /// fuzzy search that the user is trying to type.
+    pub fn tab_complete(&self, command: &str) -> Vec<String> {
+        let mut commands = self.get_commands();
+        commands.sort();
+        commands
+            .into_iter()
+            .filter(|c| c.starts_with(command))
+            .collect()
+    }
+
     /// takes in a string command and returns the output as a string
     pub fn handle_command(&mut self, command: &str) -> Result<String, JsValue> {
+        if command.is_empty() {
+            return Ok("".to_string());
+        }
         match command.trim() {
             "help" => {
                 Ok(
@@ -120,3 +147,5 @@ fn go_back_one_dir(cwd: &str) -> String {
         split_path.join("/")
     }
 }
+
+
