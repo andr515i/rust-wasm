@@ -51,6 +51,10 @@ A web-based terminal simulator built with Angular and Rust (compiled to WebAssem
    ```bash
    wasm-pack build --target web
    ```
+    Alternatively you can run this line, to clear you assets folder for all webassembly files, build new files and move them to the correct directory:
+    ```bash
+    rm -rf ./wasm/src/assets/pkg/* &&  wasm-pack build --target web && mv ./pkg/* ./wasm/src/assets/pkg/
+    ```
 
    This command compiles your Rust code into WebAssembly and generates the necessary JavaScript glue code. Make sure the output (the `pkg` folder) is copied to your Angular `src/assets` folder (or update the Angular assets configuration accordingly).
 
@@ -73,7 +77,7 @@ Once the application is running:
 - Use the up and down arrow keys to navigate through your command history.
 
 ## Project Structure
-
+```bash
 rust-wasm/
 ├── angular.json                # Angular CLI configuration, includes assets configuration
 ├── package.json                # Node dependencies and scripts
@@ -85,8 +89,9 @@ rust-wasm/
 │   └── assets/
 │       └── pkg/                # Generated WebAssembly files (from Rust)
 ├── Cargo.toml                  # Rust project configuration
-└── src/
-    └── lib.rs                  # Rust source code for terminal logic
+└── src
+    └─ lib.rs                  # Rust source code for terminal logic
+```
 
 ## Development
 
