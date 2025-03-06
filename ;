@@ -1,5 +1,4 @@
-use rust_fuzzy_search::fuzzy_search_sorted;
-use std::{collections::HashSet, vec};
+use std::collections::HashSet;
 
 use wasm_bindgen::prelude::*;
 
@@ -11,18 +10,10 @@ pub struct Terminal {
     history: Vec<String>,
 }
 
-/// import console.log for debugging purposes
-#[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
-}
-
 #[allow(clippy::new_without_default)]
 #[wasm_bindgen]
 impl Terminal {
     /// Constructor for Terminal
-    #[wasm_bindgen(constructor)]
     pub fn new() -> Terminal {
         let mut directories = HashSet::new();
         directories.insert("/".to_string());
@@ -42,24 +33,16 @@ impl Terminal {
         }
     }
 
-    /// takes in the currently typed command and returns the most likely command via a kind of
-    /// fuzzy search that the user is trying to type.
-    pub fn tab_complete(&mut self, command: &str) -> String {
-        //self.history_index += 1;
-        if command.is_empty() {
-            return "".to_string();
-        }
-        let commands: Vec<&str> = vec!["help", "about", "projects", "contact", "cd", "test"];
-
-        let result: Vec<(&str, f32)> = fuzzy_search_sorted(command, &commands);
-
-        result[0].0.to_string();
-
-        if result.is_empty() {
-            command.to_string()
-        } else {
-            result[0].0.to_string()
-        }
+    /// returns all available commands, in a list
+    pub fn get_commands(&self) -> Vec<String> {
+        vec![
+            "help".to_string(),
+            "about".to_string(),
+            "projects".to_string(),
+            "contact".to_string(),
+            "cd".to_string(),
+            "test".to_string(),
+        ]
     }
 
     /// returns the next or previous command in the command history based on the dircection given.
@@ -74,6 +57,18 @@ impl Terminal {
             self.history_index += 1;
         }
         self.history[self.history_index].clone()
+    }
+
+    /// takes in the currently typed command and returns the most likely command via a kind of
+    /// fuzzy search that the user is trying to type.
+    pub fn tab_complete(mut self, command: &str) -> Vec<String> {
+        self.history_index += 1;
+        let mut commands = self.get_commands();
+        commands.sort();
+        commands
+            .into_iter()
+            .filter(|c| c.starts_with(command))
+            .collect()
     }
 
     /// takes in a string command and returns the output as a string

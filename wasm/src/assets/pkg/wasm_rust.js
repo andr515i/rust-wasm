@@ -18,26 +18,6 @@ function getStringFromWasm0(ptr, len) {
     return cachedTextDecoder.decode(getUint8ArrayMemory0().subarray(ptr, ptr + len));
 }
 
-let cachedDataViewMemory0 = null;
-
-function getDataViewMemory0() {
-    if (cachedDataViewMemory0 === null || cachedDataViewMemory0.buffer.detached === true || (cachedDataViewMemory0.buffer.detached === undefined && cachedDataViewMemory0.buffer !== wasm.memory.buffer)) {
-        cachedDataViewMemory0 = new DataView(wasm.memory.buffer);
-    }
-    return cachedDataViewMemory0;
-}
-
-function getArrayJsValueFromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    const mem = getDataViewMemory0();
-    const result = [];
-    for (let i = ptr; i < ptr + 4 * len; i += 4) {
-        result.push(wasm.__wbindgen_export_0.get(mem.getUint32(i, true)));
-    }
-    wasm.__externref_drop_slice(ptr, len);
-    return result;
-}
-
 let WASM_VECTOR_LEN = 0;
 
 const cachedTextEncoder = (typeof TextEncoder !== 'undefined' ? new TextEncoder('utf-8') : { encode: () => { throw Error('TextEncoder not available') } } );
@@ -106,14 +86,6 @@ const TerminalFinalization = (typeof FinalizationRegistry === 'undefined')
 
 export class Terminal {
 
-    static __wrap(ptr) {
-        ptr = ptr >>> 0;
-        const obj = Object.create(Terminal.prototype);
-        obj.__wbg_ptr = ptr;
-        TerminalFinalization.register(obj, obj.__wbg_ptr, obj);
-        return obj;
-    }
-
     __destroy_into_raw() {
         const ptr = this.__wbg_ptr;
         this.__wbg_ptr = 0;
@@ -127,23 +99,36 @@ export class Terminal {
     }
     /**
      * Constructor for Terminal
-     * @returns {Terminal}
      */
-    static new() {
+    constructor() {
         const ret = wasm.terminal_new();
-        return Terminal.__wrap(ret);
+        this.__wbg_ptr = ret >>> 0;
+        TerminalFinalization.register(this, this.__wbg_ptr, this);
+        return this;
     }
     /**
-     * returns all available commands, in a list
-     * @returns {string[]}
+     * takes in the currently typed command and returns the most likely command via a kind of
+     * fuzzy search that the user is trying to type.
+     * @param {string} command
+     * @returns {string}
      */
-    get_commands() {
-        const ret = wasm.terminal_get_commands(this.__wbg_ptr);
-        var v1 = getArrayJsValueFromWasm0(ret[0], ret[1]).slice();
-        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
-        return v1;
+    tab_complete(command) {
+        let deferred2_0;
+        let deferred2_1;
+        try {
+            const ptr0 = passStringToWasm0(command, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            const ret = wasm.terminal_tab_complete(this.__wbg_ptr, ptr0, len0);
+            deferred2_0 = ret[0];
+            deferred2_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
+        }
     }
     /**
+     * returns the next or previous command in the command history based on the dircection given.
+     * only accepts "up" or "down" as direction"
      * @param {string} direction
      * @returns {string}
      */
@@ -160,21 +145,6 @@ export class Terminal {
         } finally {
             wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
         }
-    }
-    /**
-     * takes in the currently typed command and returns the most likely command via a kind of
-     * fuzzy search that the user is trying to type.
-     * @param {string} command
-     * @returns {string[]}
-     */
-    tab_complete(command) {
-        const ptr = this.__destroy_into_raw();
-        const ptr0 = passStringToWasm0(command, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-        const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.terminal_tab_complete(ptr, ptr0, len0);
-        var v2 = getArrayJsValueFromWasm0(ret[0], ret[1]).slice();
-        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
-        return v2;
     }
     /**
      * takes in a string command and returns the output as a string
@@ -265,7 +235,6 @@ function __wbg_init_memory(imports, memory) {
 function __wbg_finalize_init(instance, module) {
     wasm = instance.exports;
     __wbg_init.__wbindgen_wasm_module = module;
-    cachedDataViewMemory0 = null;
     cachedUint8ArrayMemory0 = null;
 
 

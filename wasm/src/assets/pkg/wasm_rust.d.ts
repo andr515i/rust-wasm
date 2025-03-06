@@ -1,22 +1,21 @@
 /* tslint:disable */
 /* eslint-disable */
 export class Terminal {
-  private constructor();
   free(): void;
   /**
    * Constructor for Terminal
    */
-  static new(): Terminal;
-  /**
-   * returns all available commands, in a list
-   */
-  get_commands(): string[];
-  cycle_command_history(direction: string): string;
+  constructor();
   /**
    * takes in the currently typed command and returns the most likely command via a kind of
    * fuzzy search that the user is trying to type.
    */
-  tab_complete(command: string): string[];
+  tab_complete(command: string): string;
+  /**
+   * returns the next or previous command in the command history based on the dircection given.
+   * only accepts "up" or "down" as direction"
+   */
+  cycle_command_history(direction: string): string;
   /**
    * takes in a string command and returns the output as a string
    */
@@ -29,15 +28,13 @@ export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly __wbg_terminal_free: (a: number, b: number) => void;
   readonly terminal_new: () => number;
-  readonly terminal_get_commands: (a: number) => [number, number];
-  readonly terminal_cycle_command_history: (a: number, b: number, c: number) => [number, number];
   readonly terminal_tab_complete: (a: number, b: number, c: number) => [number, number];
+  readonly terminal_cycle_command_history: (a: number, b: number, c: number) => [number, number];
   readonly terminal_handle_command: (a: number, b: number, c: number) => [number, number, number, number];
   readonly __wbindgen_export_0: WebAssembly.Table;
-  readonly __externref_drop_slice: (a: number, b: number) => void;
-  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
+  readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __externref_table_dealloc: (a: number) => void;
   readonly __wbindgen_start: () => void;
 }

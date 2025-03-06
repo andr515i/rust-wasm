@@ -13,12 +13,11 @@ export class AppComponent implements OnInit {
   terminal_content: string = 'Hello, and welcome to my cv website!';
   terminal_command: string = '';
   tab_completion: string = '';
-  tab_index: number = 0;
   terminal: any;
 
   async ngOnInit() {
     await __wbg_init('../assets/pkg/wasm_rust_bg.wasm');
-    this.terminal = Terminal.new();
+    this.terminal = new Terminal();
 
   }
 
@@ -33,7 +32,7 @@ export class AppComponent implements OnInit {
     }
     catch (error: any) {
       const error_message = error.toString();
-      console.log(error_message);
+      console.error(error_message);
       // if we dont fin{Hd a directory when using the cd command, we need to make sure we catch that error and handle the cleanup
       if (error_message === "directory not found") {
         this.terminal_content += "Error: Directory not found\n";
@@ -47,27 +46,20 @@ export class AppComponent implements OnInit {
   */
   onUp() {
     this.terminal_command = this.terminal.cycle_command_history("up");
-    console.log("up");
-
   }
   /** when the user presses the down arrow, we want to go forward in the history of commands
   */
   onDown() {
     this.terminal_command = this.terminal.cycle_command_history("down");
-    console.log("down");
   }
   /** when the user presses the tab key, we want to try and autocomplete the command
   */
   // first tap should retrieve the list and autocomplete the first one, however, we need to keep the list if the first complete wasnt the correct one. if the user keeps pressing tab without making any edits to their command, we should keep cycling through the list without needing to retrieve it again
   // if the user makes an edit to the command, we should reset the list and start from the beginning
   onTab() {
-    if (this.tab_index === 0) {
-      this.tab_completion = this.terminal.get_tab_completion(this.terminal_command);
+    if (this.terminal_command !== '' && this.terminal_command !== this.tab_completion) {
+      this.tab_completion = this.terminal.tab_complete(this.terminal_command);
+      this.terminal_command = this.tab_completion;
     }
-    else {
-      this.tab_completion = this.terminal.get_next_tab_completion();
-    }
-    this.tab_index++;
-    this.terminal_command = this.tab_completion;
   }
 }
